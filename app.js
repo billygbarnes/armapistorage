@@ -2,12 +2,12 @@
 
 var express = require('express');
 
-const app            = express();
+var app            = express();
 
-const port = 8001;
+var port = 8001;
 
 require('./routes/livedata')(app, {});
 
-app.listen(port, () => {
+app.listen(process.env.PORT || port, () => {
   console.log('We are live API on ' + port);
 });

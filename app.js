@@ -1,16 +1,24 @@
 
 
 var express = require('express');
+var bodyParser = require('body-parser');
 
 var app            = express();
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 
 var port = 8001;
 
 //require('./routes/livedata')(app, {});
 app.post('/livedata', (req, res) => {
-  // You'll create your note here.
-  res.send('Posting to livedata...' + req.body);
-  console.log('POST livedata: ' + req.body);
+  var j = JSON.stringify(req.body, null, 2)
+  res.send('Posting to livedata...' + j);
+  console.log('POST livedata: ' + j);
 });
 
 app.get('/livedata', (req, res) => {

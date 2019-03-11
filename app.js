@@ -10,7 +10,7 @@ var port = 8001;
 app.post('/livedata', (req, res) => {
   // You'll create your note here.
   res.send('Posting to livedata...' + req.body);
-  console.log(req.body);
+  console.log('POST livedata: ' + req.body);
 });
 
 app.get('/livedata', (req, res) => {

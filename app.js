@@ -4,8 +4,8 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var azure = require('azure-storage');
 
-var tblKey = 'ZPSagAm2xEsx/tQp8oNTPUT2yodqRpoDplAincOD8hNTXe7vGCw/x5ytVp7wIpAfmTRT0rtqKKTVPF/gYfbMkw==';
-var tblSvc = 'tmpstorageoil';
+var tblKey = process.env.STKEY; 
+var tblSvc = process.env.STNAME; 'tmpstorageoil';
 
 var app            = express();
 

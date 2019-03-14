@@ -24,7 +24,11 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
-var port = 8001;
+var port = 8001; // Had problems getting this to run on anything but port 80.
+
+function readPocData(name){
+
+}
 
 function writePocData(name, val){
   console.log("writePocData: " + name + ', ' + val);
@@ -63,9 +67,44 @@ app.post('/livedata', (req, res) => {
 });
 
 app.get('/livedata', (req, res) => {
- 
- res.send('GET livedata...' + Date.now());
-  console.log('GET livedata');
+ // var r = readPocData('n');
+ // console.log('app.get: ' + r);
+ // res.send('GET livedata...' + Date.now() + ': ' + r);
+    console.log('GET livedata');
+     
+    // readPocData() moved to here to simplify PoC.
+    var q = new azure.TableQuery()
+      .where('PartitionKey eq ?', 'AGA3');
+  
+     console.log("readPocData()");
+    tableSvc.queryEntities('pocData',q, null, function(error, result, response) {
+      if(!error) {
+        // query was successful
+        console.log("readPocData() success");
+        console.log(result.entries);
+        
+        // Create the payload from the result.entries.........
+        var ret = {};
+        
+        for(var i = 0; i< result.entries.length; i++) {
+          var k = result.entries[i].RowKey._;
+          var v = result.entries[i].value._;
+          var t = result.entries[i].Timestamp._;
+                    
+          var d = {
+            value: v,
+            timestamp: t
+          };
+
+           ret[k] = d;          
+        }
+        res.send(ret);  //( result.entries);
+      }
+      else {
+        console.log("readPocData() error");
+        res.send( {'error': -1});
+      }
+    }); 
   
  });
 
